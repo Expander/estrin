@@ -1,6 +1,7 @@
 #include "estrin.h"
 #include "horner.h"
 #include "stopwatch.hpp"
+#include <array>
 #include <cstdio>
 
 
@@ -26,18 +27,29 @@ double bench_fn(F f,
 }
 
 
+template <unsigned long N>
+std::array<double, N> make_coeffs()
+{
+   std::array<double, N> coeffs;
+   unsigned long i = 0;
+
+   for (auto& c: coeffs)
+      c = i++;
+
+   return coeffs;
+}
+
+
 void test_bench()
 {
    const unsigned long n_evals = 10000;
-   const unsigned long N = 100000;
+   constexpr unsigned long N = 100000;
    double x = 2.0;
-   double coeffs[N];
 
-   for (unsigned i = 0; i < N; ++i)
-      coeffs[i] = i;
+   const auto coeffs = make_coeffs<N>();
 
-   const double estrin_t = bench_fn(::estrin, x, coeffs, NELEMS(coeffs), n_evals);
-   const double horner_t = bench_fn(::horner, x, coeffs, NELEMS(coeffs), n_evals);
+   const double estrin_t = bench_fn(::estrin, x, &coeffs[0], coeffs.size(), n_evals);
+   const double horner_t = bench_fn(::horner, x, &coeffs[0], coeffs.size(), n_evals);
 
    printf("Benchmark results\n");
    printf("-----------------\n");
