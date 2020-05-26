@@ -62,6 +62,10 @@ int main()
    printf("-----------------\n");
 
    test_bench<1     , 1000000>();
+   test_bench<2     , 1000000>();
+   test_bench<3     , 1000000>();
+   test_bench<4     , 1000000>();
+   test_bench<5     , 1000000>();
    test_bench<10    , 1000000>();
    test_bench<100   , 1000000>();
    test_bench<1000  ,  100000>();

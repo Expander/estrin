@@ -11,8 +11,13 @@
  */
 double estrin(double x, const double* c, unsigned len)
 {
-   if (len == 0)
-      return 0.0;
+   switch (len) {
+   case 0: return 0.0;
+   case 1: return c[0];
+   case 2: return c[0] + x*c[1];
+   case 3: return c[0] + x*c[1] + x*x*c[2];
+   case 4: return c[0] + x*c[1] + x*x*(c[2] + x*c[3]);
+   }
 
    unsigned nd = 1 + len/2;
    double d[nd];
