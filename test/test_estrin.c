@@ -11,7 +11,29 @@
    } while (0)
 
 
+#define CHECK_EQ(lhs,rhs)                               \
+   do {                                                 \
+      if (!((lhs) == (rhs))) {                          \
+         printf("FAILED test in line %d", __LINE__);    \
+         printf(": lhs (%f) != rhs (%f)\n", lhs, rhs);  \
+         errors++;                                      \
+      }                                                 \
+   } while (0)
+
+
+#define NELEMS(a) (sizeof(a)/sizeof(a[0]))
+
+
 unsigned errors = 0;
+
+
+double horner(double x, const double* c, int len)
+{
+   double p = 0.0;
+   while (len--)
+      p = p*x + c[len];
+   return p;
+}
 
 
 void test_empty()
@@ -20,9 +42,40 @@ void test_empty()
 }
 
 
+void test_non_empty()
+{
+   {
+      double x = 1.0;
+      double c[] = { 2.0 };
+      CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
+   }
+   {
+      double x = 1.0;
+      double c[] = { 2.0, 3.0 };
+      CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
+   }
+   {
+      double x = 1.0;
+      double c[] = { 2.0, 3.0, 4.0 };
+      CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
+   }
+   {
+      double x = 1.0;
+      double c[] = { 2.0, 3.0, 4.0, 5.0 };
+      CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
+   }
+   {
+      double x = 1.0;
+      double c[] = { 2.0, 3.0, 4.0, 6.0 };
+      CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
+   }
+}
+
+
 int main()
 {
    test_empty();
+   test_non_empty();
 
    return errors;
 }
