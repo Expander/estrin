@@ -24,7 +24,7 @@
 #define NELEMS(a) (sizeof(a)/sizeof(a[0]))
 
 
-unsigned errors = 0;
+int errors = 0;
 
 
 double horner(double x, const double* c, int len)
@@ -44,29 +44,25 @@ void test_empty()
 
 void test_non_empty()
 {
+   double x = 2.0;
    {
-      double x = 1.0;
       double c[] = { 2.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
    }
    {
-      double x = 1.0;
       double c[] = { 2.0, 3.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
    }
    {
-      double x = 1.0;
       double c[] = { 2.0, 3.0, 4.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
    }
    {
-      double x = 1.0;
       double c[] = { 2.0, 3.0, 4.0, 5.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
    }
    {
-      double x = 1.0;
-      double c[] = { 2.0, 3.0, 4.0, 6.0 };
+      double c[] = { 2.0, 3.0, 4.0, 5.0, 6.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
    }
 }
