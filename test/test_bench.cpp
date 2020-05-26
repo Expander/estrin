@@ -68,9 +68,9 @@ void test_bench()
    const double time_horner_f = bench_fn(horner_f, N_EVALS);
 
    printf("Evaluations of a polynomial with %lu coefficients\n", N);
-   printf("  Horner (C)  : %2.1e ms%s\n", time_horner_f, (time_horner_f < time_estrin_f ? " <--": ""));
-   printf("  Estrin (C)  : %2.1e ms%s\n", time_estrin_f, (time_horner_f < time_estrin_f ? "": " <--"));
-   printf("  Estrin (C++): %2.1e ms  \n", time_estrin_t);
+   printf("  Horner (C)  : %2.1e ms%s\n", time_horner_f, (time_horner_f < time_estrin_f && time_horner_f < time_estrin_t ? " <--" : ""));
+   printf("  Estrin (C)  : %2.1e ms%s\n", time_estrin_f, (time_estrin_f < time_horner_f && time_estrin_f < time_estrin_t ? " <--" : ""));
+   printf("  Estrin (C++): %2.1e ms%s\n", time_estrin_t, (time_estrin_t < time_horner_f && time_estrin_t < time_estrin_f ? " <--" : ""));
 }
 
 
