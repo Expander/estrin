@@ -40,26 +40,31 @@ std::array<double, N> make_coeffs()
 }
 
 
+template <unsigned long N, unsigned long N_EVALS>
 void test_bench()
 {
-   const unsigned long n_evals = 10000;
-   constexpr unsigned long N = 100000;
    double x = 2.0;
 
    const auto coeffs = make_coeffs<N>();
 
-   const double estrin_t = bench_fn(::estrin, x, &coeffs[0], coeffs.size(), n_evals);
-   const double horner_t = bench_fn(::horner, x, &coeffs[0], coeffs.size(), n_evals);
+   const double estrin_t = bench_fn(::estrin, x, &coeffs[0], coeffs.size(), N_EVALS);
+   const double horner_t = bench_fn(::horner, x, &coeffs[0], coeffs.size(), N_EVALS);
 
-   printf("Benchmark results\n");
-   printf("-----------------\n");
-   printf("Evaluations of a polynomial with %lu coefficients, %lu times\n", N, n_evals);
-   printf("  Horner (C): %f ms per evaluation\n", horner_t);
-   printf("  Estrin (C): %f ms per evaluation\n", estrin_t);
+   printf("Evaluations of a polynomial with %lu coefficients\n", N);
+   printf("  Horner (C): %2.1e ms%s\n", horner_t, (horner_t < estrin_t ? " <--": ""));
+   printf("  Estrin (C): %2.1e ms%s\n", estrin_t, (horner_t < estrin_t ? "": " <--"));
 }
 
 
 int main()
 {
-   test_bench();
+   printf("Benchmark results\n");
+   printf("-----------------\n");
+
+   test_bench<1     , 1000000>();
+   test_bench<10    , 1000000>();
+   test_bench<100   , 1000000>();
+   test_bench<1000  ,  100000>();
+   test_bench<10000 ,  100000>();
+   test_bench<100000,   10000>();
 }
