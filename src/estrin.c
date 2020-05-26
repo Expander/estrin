@@ -30,5 +30,5 @@ double estrin(double x, const double* c, unsigned len)
    else
       --nd;
 
-   return len <= 2 ? d[0] : estrin(x*x, d, nd);
+   return estrin(x*x, d, nd);
 }

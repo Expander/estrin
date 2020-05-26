@@ -1,4 +1,5 @@
 #include "estrin.h"
+#include "estrin.hpp"
 #include "horner.h"
 #include "stopwatch.hpp"
 #include <array>
@@ -8,18 +9,21 @@
 #define NELEMS(a) (sizeof(a)/sizeof(a[0]))
 
 
+template <class T>
+inline void do_not_optimize(const T& value)
+{
+   asm volatile("" : : "r,m"(value) : "memory");
+}
+
+
 template <class F>
-double bench_fn(F f,
-                double x,
-                const double* c,
-                unsigned long len,
-                unsigned long n_evals)
+double bench_fn(F f, unsigned long n_evals)
 {
    bench::Stopwatch sw;
    sw.start();
 
    for (unsigned long n = 0; n < n_evals; ++n)
-      f(x, c, len);
+      do_not_optimize(f());
 
    sw.stop();
 
@@ -47,12 +51,26 @@ void test_bench()
 
    const auto coeffs = make_coeffs<N>();
 
-   const double estrin_t = bench_fn(::estrin, x, &coeffs[0], coeffs.size(), N_EVALS);
-   const double horner_t = bench_fn(::horner, x, &coeffs[0], coeffs.size(), N_EVALS);
+   auto estrin_f = [&] () {
+      return ::estrin(x, &coeffs[0], coeffs.size());
+   };
+
+   auto estrin_t = [&] () {
+      return estrin<N>(x, &coeffs[0]);
+   };
+
+   auto horner_f = [&] () {
+      return ::horner(x, &coeffs[0], coeffs.size());
+   };
+
+   const double time_estrin_f = bench_fn(estrin_f, N_EVALS);
+   const double time_estrin_t = bench_fn(horner_f, N_EVALS);
+   const double time_horner_f = bench_fn(estrin_t, N_EVALS);
 
    printf("Evaluations of a polynomial with %lu coefficients\n", N);
-   printf("  Horner (C): %2.1e ms%s\n", horner_t, (horner_t < estrin_t ? " <--": ""));
-   printf("  Estrin (C): %2.1e ms%s\n", estrin_t, (horner_t < estrin_t ? "": " <--"));
+   printf("  Horner (C)  : %2.1e ms%s\n", time_horner_f, (time_horner_f < time_estrin_f ? " <--": ""));
+   printf("  Estrin (C)  : %2.1e ms%s\n", time_estrin_f, (time_horner_f < time_estrin_f ? "": " <--"));
+   printf("  Estrin (C++): %2.1e ms%s\n", time_estrin_t, (time_horner_f < time_estrin_f ? "": " <--"));
 }
 
 
