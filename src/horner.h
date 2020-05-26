@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-double estrin(double x, const double* c, unsigned len);
+double horner(double x, const double* c, int len);
 
 #ifdef __cplusplus
 }
