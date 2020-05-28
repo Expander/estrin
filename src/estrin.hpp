@@ -5,13 +5,15 @@
  *
  * @param x variable
  * @param c coefficients (c[0], c[1], ..., c[len-1])
+ * @tparam T type of variable
+ * @tparam Tc type of coefficients
  *
  * @return value of P(x)
  *
  * @note Author: Alexander Voigt
  */
-template <unsigned len>
-double estrin(double x, const double (&c)[len])
+template <typename T, typename Tc, unsigned len>
+T estrin(T x, const Tc (&c)[len])
 {
    if constexpr (len == 0)
       return 0.0;
@@ -26,14 +28,14 @@ double estrin(double x, const double (&c)[len])
 
    if constexpr (len % 2) {
       constexpr unsigned nd = 1 + len/2;
-      double d[nd];
+      T d[nd];
       for (unsigned i = 0; i < nd - 1; ++i)
          d[i] = c[2*i] + c[2*i + 1]*x;
       d[nd - 1] = c[len - 1];
       return estrin(x*x, d);
    } else {
       constexpr unsigned nd = len/2;
-      double d[nd];
+      T d[nd];
       for (unsigned i = 0; i < nd; ++i)
          d[i] = c[2*i] + c[2*i + 1]*x;
       return estrin(x*x, d);
