@@ -2,7 +2,6 @@
 #include "estrin.hpp"
 #include "horner.h"
 #include "stopwatch.hpp"
-#include <array>
 #include <cstdio>
 
 
@@ -32,15 +31,12 @@ double bench_fn(F f, unsigned long n_evals)
 
 
 template <unsigned long N>
-std::array<double, N> make_coeffs()
+void make_coeffs(double (&coeffs)[N])
 {
-   std::array<double, N> coeffs;
    unsigned long i = 0;
 
    for (auto& c: coeffs)
       c = i++;
-
-   return coeffs;
 }
 
 
@@ -49,18 +45,19 @@ void test_bench()
 {
    double x = 2.0;
 
-   const auto coeffs = make_coeffs<N>();
+   double coeffs[N] = { 0 };
+   make_coeffs(coeffs);
 
    auto estrin_f = [&] () {
-      return ::estrin(x, &coeffs[0], coeffs.size());
+      return ::estrin(x, coeffs, N);
    };
 
    auto estrin_t = [&] () {
-      return estrin<N>(x, &coeffs[0]);
+      return estrin<N>(x, coeffs);
    };
 
    auto horner_f = [&] () {
-      return ::horner(x, &coeffs[0], coeffs.size());
+      return ::horner(x, coeffs, N);
    };
 
    const double time_estrin_f = bench_fn(estrin_f, N_EVALS);
