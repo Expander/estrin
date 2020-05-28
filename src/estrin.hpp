@@ -13,7 +13,7 @@
  * @note Author: Alexander Voigt
  */
 template <typename T, typename Tc, unsigned len>
-T estrin(T x, const Tc (&c)[len])
+T estrin(T x, const Tc (&c)[len]) noexcept
 {
    if constexpr (len == 0)
       return 0.0;
