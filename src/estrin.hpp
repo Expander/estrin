@@ -11,7 +11,7 @@
  * @note Author: Alexander Voigt
  */
 template <unsigned len>
-double estrin(double x, const double c[len])
+double estrin(double x, const double (&c)[len])
 {
    if constexpr (len == 0)
       return 0.0;
@@ -24,16 +24,18 @@ double estrin(double x, const double c[len])
    if constexpr (len == 4)
       return c[0] + x*c[1] + x*x*(c[2] + x*c[3]);
 
-   constexpr unsigned nd = 1 + len/2;
-   double d[nd];
-
-   for (unsigned i = 0; i < nd - 1; ++i)
-      d[i] = c[2*i] + c[2*i + 1]*x;
-
    if constexpr (len % 2) {
+      constexpr unsigned nd = 1 + len/2;
+      double d[nd];
+      for (unsigned i = 0; i < nd - 1; ++i)
+         d[i] = c[2*i] + c[2*i + 1]*x;
       d[nd - 1] = c[len - 1];
-      return estrin<nd>(x*x, d);
+      return estrin(x*x, d);
    } else {
-      return estrin<nd-1>(x*x, d);
+      constexpr unsigned nd = len/2;
+      double d[nd];
+      for (unsigned i = 0; i < nd; ++i)
+         d[i] = c[2*i] + c[2*i + 1]*x;
+      return estrin(x*x, d);
    }
 }

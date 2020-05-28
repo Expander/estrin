@@ -41,32 +41,32 @@ void test_non_empty()
    {
       double c[] = { 2.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
    {
       double c[] = { 2.0, 3.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
    {
       double c[] = { 2.0, 3.0, 4.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
    {
       double c[] = { 2.0, 3.0, 4.0, 5.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
    {
       double c[] = { 2.0, 3.0, 4.0, 5.0, 6.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
    {
       double c[] = { 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 };
       CHECK_EQ(estrin(x, c, NELEMS(c)), horner(x, c, NELEMS(c)));
-      CHECK_EQ(estrin<NELEMS(c)>(x, c), horner(x, c, NELEMS(c)));
+      CHECK_EQ(estrin(x, c), horner(x, c, NELEMS(c)));
    }
 }
 

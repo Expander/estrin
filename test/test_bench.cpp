@@ -53,7 +53,7 @@ void test_bench()
    };
 
    auto estrin_t = [&] () {
-      return estrin<N>(x, coeffs);
+      return estrin(x, coeffs);
    };
 
    auto horner_f = [&] () {
