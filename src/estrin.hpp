@@ -7,6 +7,7 @@
  * @param c coefficients (c[0], c[1], ..., c[len-1])
  * @tparam T type of variable
  * @tparam Tc type of coefficients
+ * @tparam len length of Tc array
  *
  * @return value of P(x)
  *
