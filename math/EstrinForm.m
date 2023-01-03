@@ -9,7 +9,7 @@ EstrinForm[x_, c_List] :=
            ci = PadRight[c, n+2];
            d = Table[ci[[2i+1]] + ci[[2i+2]] x, {i, 0, Floor[n/2]}];
            If[n <= 2,
-              d[[1]],
+              First[d],
               EstrinForm[x^2, d]
            ]
     ];
